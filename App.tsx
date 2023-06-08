@@ -43,9 +43,7 @@ export default function App(): JSX.Element {
 
   return (
     <View style={styles.container}>
-      {/* Left column */}
       <View style={styles.leftColumn}>
-        {/* Render address buttons */}
         {addresses.map((address) => (
           <TouchableOpacity
             key={address.id}
@@ -56,22 +54,20 @@ export default function App(): JSX.Element {
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* Right column */}
-      {selectedAddress ? (
-        // If an address is selected, render the WebView component with the OpenStreetMap URL
-        <View style={styles.innerRightColumn}>
-          <WebView
-            source={{
-              uri: `https://www.openstreetmap.org/?mlat=${selectedAddress.lat}&mlon=${selectedAddress.lng}&zoom=16`,
-            }}
-            style={styles.webView}
-          />
-        </View>
-      ) : (
-        // If no address is selected, render a placeholder text
-        <Text style={styles.placeholderTextRightColumn}>Select an address</Text>
-      )}
+      <View style={styles.rightColumn}>
+        {selectedAddress ? (
+          <View style={styles.mapContainer}>
+            <WebView
+              style={styles.map}
+              source={{
+                uri: `https://www.openstreetmap.org/?mlat=${selectedAddress.lat}&mlon=${selectedAddress.lng}&zoom=16`,
+              }}
+            />
+          </View>
+        ) : (
+          <Text style={styles.placeholderText}>Select an address</Text>
+        )}
+      </View>
     </View>
   );
 }
@@ -96,22 +92,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-  placeholderTextRightColumn: {
+  rightColumn: {
     flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  mapContainer: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
+  map: {
+    flex: 1,
+  },
+  placeholderText: {
     fontSize: 18,
     color: '#666',
-    padding: 10,
-  },
-  innerRightColumn: {
-    flex: 2,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  webView: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
   },
 });
